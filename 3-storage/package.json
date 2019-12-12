@@ -1,17 +1,32 @@
 {
-  "name": "laveldb",
+  "name": "leveldb_server",
   "version": "1.0.0",
-  "description": "database ",
+  "description": "server javascript google",
   "main": "index.js",
-  "dependencies": {
-    "express": "^4.17.1"
-  },
-  "devDependencies": {
-    "typescript": "^3.7.3"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "rudy",
-  "license": "ISC"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RudyAG/node_backend/tree/master/3-storage"
+  },
+  "keywords": [
+    "node",
+    "ExpressJS",
+    "nodemon",
+    "leveldb"
+  ],
+  "author": "RudyAG",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/levelup": "^4.3.0",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.2"
+  },
+  "dependencies": {
+    "encoding-down": "^6.3.0",
+    "level-ws": "^2.0.0",
+    "leveldown": "^5.4.1",
+    "levelup": "^4.3.2"
+  }
 }
