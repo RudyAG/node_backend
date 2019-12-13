@@ -1,6 +1,6 @@
 # LEVELDB SERVER
 
-## npm installation ExpressJS Nodemon LevelDB Body-Parser Ts-Node
+## npm installation ExpressJS Nodemon LevelDB Body-Parser Ts-Node
 
 npm install express --save-dev
 npm install nodemon --save-dev
@@ -31,3 +31,11 @@ Delete not implement
 ## Configure Nodemon and tsconfig
 
 edit nodemon.js and tsconfig.json
+
+## To run the server
+
+npm install 
+
+npm run build
+
+npm run dev

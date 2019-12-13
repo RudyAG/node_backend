@@ -9,6 +9,7 @@ app.use(bodyparser.urlencoded())
 const dbMet: MetricsHandler = new MetricsHandler('./db/metrics')
 
 app.get('/metrics/:id', (req: any, res: any) => {
+  console.log("get oki")
   dbMet.get(req.params.id, (err: Error | null, result?: any) => {
     if (err) throw err
     res.json(result)

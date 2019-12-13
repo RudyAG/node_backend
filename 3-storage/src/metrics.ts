@@ -30,19 +30,44 @@ export class MetricsHandler {
   public get(key: string, callback: (err: Error | null, result?: Metric[]) => void) {
     const stream = this.db.createReadStream()
     var met: Metric[] = []
-      
-    stream.on('error', callback)
+    if (key=="all"){
+      stream.on('error', callback)
       .on('data', (data: any) => {
-        const [_, k, timestamp] = data.key.split(":")
-        const value = data.value
-        if (key != k) {
-          console.log(`LevelDB error: ${data} does not match key ${key}`)
-        } else {
-          met.push(new Metric(timestamp, value))
+        for(let i in data) {
+          key=i;
+          let g=data[i].split(":")
+          key=g[1]
+          const [_, k, timestamp] = data.key.split(":")
+          const value = data.value
+          if (key != k) {
+            console.log(`LevelDB error: ${data} does not match key ${key}`)
+          } else {
+            met.push(new Metric(timestamp, value))
+          }
         }
       })
       .on('end', (err: Error) => {
         callback(null, met)
       })
+      
+    }
+    else{
+      stream.on('error', callback)
+      .on('data', (data: any) => {
+        const [_, k, timestamp] = data.key.split(":")
+        const value = data.value
+        if (key != k) {
+          //console.log(`LevelDB error: ${data} does not match key ${key}`)
+        } else {
+          met.push(new Metric(timestamp, value))
+        }
+      })
+      
+      .on('end', (err: Error) => {
+        callback(null, met)
+      })
+   }
   }
+    
+
 }
