@@ -23,6 +23,13 @@ app.post('/metrics/:id', (req: any, res: any) => {
   })
 })
 
+app.delete('/metrics/:id', (req: any, res: any) => {
+  dbMet.delete(req.params.id, req.body, (err: Error | null) => {
+    if (err) throw err
+    res.status(200).send()
+  })
+})
+
 app.set('port', 1337);
 app.listen(
   app.get('port'), 

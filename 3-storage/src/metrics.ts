@@ -1,5 +1,6 @@
 import LevelDB = require('./leveldb')
 import WriteStream from 'level-ws'
+import { Stream } from 'stream'
 
 export class Metric {
   public timestamp: string
@@ -62,12 +63,19 @@ export class MetricsHandler {
           met.push(new Metric(timestamp, value))
         }
       })
-      
       .on('end', (err: Error) => {
         callback(null, met)
       })
-   }
+    }
   }
-    
 
+  public delete(key: number, metrics: Metric[], callback: (error: Error | null) => void) {
+    const stream = WriteStream(this.db, { type: 'del' })
+    stream.on('error', callback)
+    stream.on('close', callback)
+    metrics.forEach((m: Metric) => {
+      stream.write({ key: `metric:${key}:${m.timestamp}`, value: m.value })
+    })
+    stream.end()
+  } 
 }
