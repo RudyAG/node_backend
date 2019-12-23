@@ -1,6 +1,4 @@
 import { LevelDB } from "./leveldb"
-import WriteStream from 'level-ws'
-//import bcrypt = require ('bcrypt')
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -43,10 +41,10 @@ export class User {
         return bcrypt.compareSync(toValidate, this.password)   
     }
 }
-
+//User CRUD
 export class UserHandler {
     public db: any
-    
+   //Get User 
     public get(username: string, callback: (err: Error | null, result?: User) => void) {
         this.db.get(`user:${username}`, function (err: Error, data: any) {
             if (err) callback(err)
@@ -54,14 +52,14 @@ export class UserHandler {
             callback(null, User.fromDb(username, data))
         })
     }
-    
+    //Create User 
     public save(user: User, callback: (err: Error | null) => void) {
         this.db.put(`user:${user.username}`, `${user.getPassword()}:${user.email}`, (err: Error | null) => {
           callback(err)
         })
       }
     
-    
+    //Delete User 
     public delete(username: string, callback: (err: Error | null) => void) {
         // TODO
         this.db.del(`user:${username}`, (err: Error | null) => {
