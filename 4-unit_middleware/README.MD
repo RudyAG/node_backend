@@ -31,4 +31,8 @@ npm install
 
 npm run build
 
+## run mocha and Tai test
+npm run test
+
+## run development 
 npm run dev

@@ -34,6 +34,15 @@ app.get('/hello/:name', (req: any, res: any) => {
 
 const dbMet: MetricsHandler = new MetricsHandler('./db/metrics')
 
+app.get('/metrics.json', (req: any, res: any) => {
+  MetricsHandler.get((err: Error | null, result?: any) => {
+    if (err) {
+      throw err
+    }
+    res.json(result)
+  })
+})
+
 app.get('/metrics/:id', (req: any, res: any) => {
   console.log("get oki")
   dbMet.get(req.params.id, (err: Error | null, result?: any) => {
@@ -68,6 +77,10 @@ authRouter.get('/signup', (req: any, res: any) => {
   res.render('signup')
 })
 
+authRouter.get('/signout', (req: any, res: any) => {
+  res.render('signout')
+})
+
 authRouter.post('/signup', (req: any, res: any) => {
   const NewUser: User = new User(req.body.username,req.body.email,req.body.password,true)
   console.log("server :" + NewUser.getPassword())
@@ -95,6 +108,16 @@ authRouter.post('/login', (req: any, res: any, next: any) => {
       req.session.user = result
       res.redirect('/')
     }
+  })
+})
+
+authRouter.post('/signup', (req: any, res: any) => {
+  const NewUser: User = new User(req.body.username,req.body.email,req.body.password,true)
+  console.log("server :" + NewUser.getPassword())
+  dbUser.save(NewUser,(err: Error | null) => {
+    if (err) throw err
+    res.status(200).send()
+    res.redirect('/login')
   })
 })
 
@@ -126,6 +149,15 @@ userRouter.get('/:username', (req: any, res: any, next: any) => {
   })
 })
 
+app.get('/metrics.json', (req: any, res: any) => {
+  MetricsHandler.get((err: Error | null, result?: any) => {
+    if (err) {
+      throw err
+    }
+    res.json(result)
+  })
+})
+
 app.use('/user', userRouter)
 
 const authCheck = function (req: any, res: any, next: any) {
@@ -137,8 +169,6 @@ const authCheck = function (req: any, res: any, next: any) {
 app.get('/', authCheck, (req: any, res: any) => {
   res.render('index', { name: req.session.username })
 })
-
-
 
 app.set('port', 8080);
 app.listen(

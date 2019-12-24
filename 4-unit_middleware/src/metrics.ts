@@ -1,4 +1,4 @@
-import LevelDB = require('./leveldb')
+import { LevelDB } from "./leveldb"
 import WriteStream from 'level-ws'
 import { Stream } from 'stream'
 
@@ -13,12 +13,12 @@ export class Metric {
 }
 
 export class MetricsHandler {
-  private db: any 
+  public db: any 
   constructor(dbPath: string) {
-    this.db = LevelDB.LevelDB.open(dbPath)
+    this.db = LevelDB.open(dbPath)
   }
 
-  public save(key: number, metrics: Metric[], callback: (error: Error | null) => void) {
+  public save(key: number, metrics: Metric[], callback: (err: Error | null) => void) {
     const stream = WriteStream(this.db)
     stream.on('error', callback)
     stream.on('close', callback)
@@ -26,6 +26,7 @@ export class MetricsHandler {
       stream.write({ key: `metric:${key}:${m.timestamp}`, value: m.value })
     })
     stream.end()
+    callback(null)
   } 
   
   public get(key: string, callback: (err: Error | null, result?: Metric[]) => void) {
@@ -58,7 +59,7 @@ export class MetricsHandler {
         const [_, k, timestamp] = data.key.split(":")
         const value = data.value
         if (key != k) {
-          //console.log(`LevelDB error: ${data} does not match key ${key}`)
+          console.log(`LevelDB error: ${data} does not match key ${key}`)
         } else {
           met.push(new Metric(timestamp, value))
         }
@@ -77,5 +78,12 @@ export class MetricsHandler {
       stream.write({ key: `metric:${key}:${m.timestamp}`, value: m.value })
     })
     stream.end()
-  } 
+  }
+  static get(callback: (error: Error | null, result?: Metric[]) => void) {
+    const result = [
+      new Metric('2013-11-04 14:00 UTC', 12),
+      new Metric('2013-11-04 14:30 UTC', 15)
+    ]
+    callback(null, result)
+  }
 }
