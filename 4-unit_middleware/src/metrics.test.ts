@@ -29,7 +29,7 @@ describe('Metrics', function () {
     })
   })
 
-
+// BUG Test run twice and create a err is undifined 
 describe('#save', function () {
   it('should save data', function () {
     const result = [
@@ -44,7 +44,7 @@ describe('#save', function () {
 })
 
 
-
+//Same
 describe('#delete', function () {
   it('should delete data', function () {  
     const result = [
